@@ -1,0 +1,3 @@
+tensorflow==2.8.0
+tensorflow_hub==0.12.0
+opensearch-py==1.1.0
