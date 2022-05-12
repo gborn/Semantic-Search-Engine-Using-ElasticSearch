@@ -33,6 +33,7 @@ def lambda_handler(event, context):
     Lambda Handler to accept query and return results from elastic search
     """
     query = event['PathParameters']['query']
+    print(query)
 
     client = get_client()
     query_vector = tf.make_ndarray(tf.make_tensor_proto(model([query]))).tolist()[0]
