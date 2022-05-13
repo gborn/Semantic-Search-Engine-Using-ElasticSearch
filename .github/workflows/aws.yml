@@ -76,8 +76,6 @@ jobs:
         # be deployed to ECS.
         docker build -f awslambda-semantic-search-engine/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-        # Create a ECR repository
-        aws ecr create-repository --repository-name awslambda-semantic-search-engine --image-scanning-configuration scanOnPush=true --region ap-south-1
         # Tag the image to match the repository name
         docker tag awslambda-semantic-search-engine:latest 759125962999.dkr.ecr.ap-south-1.amazonaws.com/awslambda-semantic-search-engine:latest
         # Register docker to ECR
