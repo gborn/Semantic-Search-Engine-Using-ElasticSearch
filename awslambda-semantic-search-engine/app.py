@@ -23,7 +23,10 @@ def get_client():
         http_auth = auth,
         use_ssl = True,
         verify_certs = True,
-        connection_class = RequestsHttpConnection
+        connection_class = RequestsHttpConnection,
+        timeout=60,
+        max_retries=10,
+        retry_on_timeout=True
     )
     return client
 
@@ -32,19 +35,27 @@ def lambda_handler(event, context):
     """
     Lambda Handler to accept query and return results from elastic search
     """
-    query = event['PathParameters']['query']
-    print(query)
+    # query to search
+    query = event['queryStringParameters']['query']
+
+    # Number of neighbors
+    k = event['queryStringParameters']['k']
+
+    # Number of search results
+    n = event['queryStringParameters']['n']
+
+    print('Recieved query', query, 'K', k, 'n', n)
 
     client = get_client()
     query_vector = tf.make_ndarray(tf.make_tensor_proto(model([query]))).tolist()[0]
 
     b = {
-    "size": 10,
+    "size": n,
     "query": {
         "knn": {
         "question_vector": {
             "vector": query_vector,
-            "k": 10
+            "k": k
                 }
             }
         }
